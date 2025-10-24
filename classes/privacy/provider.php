@@ -15,15 +15,15 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Privacy Subsystem implementation for block_comments.
+ * Privacy Subsystem implementation for block_annotation.
  *
- * @package    block_comments
+ * @package    block_annotation
  * @category   privacy
  * @copyright  2018 Shamim Rezaie <shamim@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace block_comments\privacy;
+namespace block_annotation\privacy;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -40,11 +40,12 @@ use core_privacy\local\request\approved_userlist;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class provider implements
-        // The block_comments block stores user provided data.
-        \core_privacy\local\metadata\provider,
-        \core_privacy\local\request\core_userlist_provider,
-        // The block_comments block provides data directly to core.
-        \core_privacy\local\request\plugin\provider {
+    // The block_annotation block stores user provided data.
+    \core_privacy\local\metadata\provider,
+    \core_privacy\local\request\core_userlist_provider,
+    // The block_annotation block provides data directly to core.
+    \core_privacy\local\request\plugin\provider
+{
 
     /**
      * Returns meta data about this system.
@@ -52,8 +53,9 @@ class provider implements
      * @param collection $collection
      * @return collection
      */
-    public static function get_metadata(collection $collection) : collection {
-        return $collection->add_subsystem_link('core_comment', [], 'privacy:metadata:core_comment');
+    public static function get_metadata(collection $collection): collection
+    {
+        return $collection->add_subsystem_link('core_annotation', [], 'privacy:metadata:core_annotation');
     }
 
     /**
@@ -62,7 +64,8 @@ class provider implements
      * @param int $userid
      * @return contextlist
      */
-    public static function get_contexts_for_userid(int $userid) : contextlist {
+    public static function get_contexts_for_userid(int $userid): contextlist
+    {
         $contextlist = new contextlist();
 
         $sql = "SELECT contextid
@@ -70,7 +73,7 @@ class provider implements
                  WHERE component = :component
                    AND userid = :userid";
         $params = [
-            'component' => 'block_comments',
+            'component' => 'block_annotation',
             'userid' => $userid
         ];
 
@@ -84,12 +87,13 @@ class provider implements
      *
      * @param userlist $userlist The userlist containing the list of users who have data in this context/plugin combination.
      */
-    public static function get_users_in_context(userlist $userlist) {
+    public static function get_users_in_context(userlist $userlist)
+    {
         $context = $userlist->get_context();
 
         $params = [
             'contextid' => $context->id,
-            'component' => 'block_comments',
+            'component' => 'block_annotation',
         ];
 
         $sql = "SELECT userid as userid
@@ -105,15 +109,16 @@ class provider implements
      *
      * @param approved_contextlist $contextlist
      */
-    public static function export_user_data(approved_contextlist $contextlist) {
+    public static function export_user_data(approved_contextlist $contextlist)
+    {
         $contexts = $contextlist->get_contexts();
         foreach ($contexts as $context) {
             \core_comment\privacy\provider::export_comments(
-                    $context,
-                    'block_comments',
-                    'page_comments',
-                    0,
-                    []
+                $context,
+                'block_annotation',
+                'page_comments',
+                0,
+                []
             );
         }
     }
@@ -123,8 +128,9 @@ class provider implements
      *
      * @param \context $context
      */
-    public static function delete_data_for_all_users_in_context(\context $context) {
-        \core_comment\privacy\provider::delete_comments_for_all_users($context, 'block_comments');
+    public static function delete_data_for_all_users_in_context(\context $context)
+    {
+        \core_comment\privacy\provider::delete_comments_for_all_users($context, 'block_annotation');
     }
 
     /**
@@ -132,8 +138,9 @@ class provider implements
      *
      * @param approved_userlist $userlist The approved context and user information to delete information for.
      */
-    public static function delete_data_for_users(approved_userlist $userlist) {
-        \core_comment\privacy\provider::delete_comments_for_users($userlist, 'block_comments');
+    public static function delete_data_for_users(approved_userlist $userlist)
+    {
+        \core_comment\privacy\provider::delete_comments_for_users($userlist, 'block_annotation');
     }
 
     /**
@@ -141,7 +148,8 @@ class provider implements
      *
      * @param approved_contextlist $contextlist
      */
-    public static function delete_data_for_user(approved_contextlist $contextlist) {
-        \core_comment\privacy\provider::delete_comments_for_user($contextlist, 'block_comments');
+    public static function delete_data_for_user(approved_contextlist $contextlist)
+    {
+        \core_comment\privacy\provider::delete_comments_for_user($contextlist, 'block_annotation');
     }
 }

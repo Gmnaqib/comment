@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The comments block helper functions and callbacks
+ * The annotation block helper functions and callbacks
  *
- * @package   block_comments
+ * @package   block_annotation
  * @copyright 2011 Dongsheng Cai <dongsheng@moodle.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -39,7 +39,8 @@ defined('MOODLE_INTERNAL') || die();
  * }
  * @return boolean
  */
-function block_comments_comment_validate($comment_param) {
+function block_annotation_comment_validate($comment_param)
+{
     if ($comment_param->commentarea != 'page_comments') {
         throw new comment_exception('invalidcommentarea');
     }
@@ -58,7 +59,8 @@ function block_comments_comment_validate($comment_param) {
  * @param stdClass $args
  * @return array
  */
-function block_comments_comment_permissions($args) {
+function block_annotation_comment_permissions($args)
+{
     global $DB, $USER;
     // By default, anyone can post and view comments.
     $canpost = $canview = true;
@@ -66,7 +68,7 @@ function block_comments_comment_permissions($args) {
     if ($args->context->contextlevel == CONTEXT_USER && $USER->id != $args->context->instanceid) {
         // Check whether the context owner has a comment block in the user's profile.
         $sqlparam = [
-            'blockname' => 'comments',
+            'blockname' => 'annotation',
             'parentcontextid' => $args->context->id,
             'pagetypepattern' => 'user-profile',
         ];
@@ -91,7 +93,8 @@ function block_comments_comment_permissions($args) {
  * @param stdClass $args
  * @return boolean
  */
-function block_comments_comment_display($comments, $args) {
+function block_annotation_comment_display($comments, $args)
+{
     if ($args->commentarea != 'page_comments') {
         throw new comment_exception('invalidcommentarea');
     }

@@ -14,7 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace block_annotation;
+/**
+ * Strings for component 'block_annotation', language 'en', branch 'MOODLE_20_STABLE'
+ *
+ * @package   block_annotation
+ * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-use advanced_testcase;
-use block_annotation;
+$string['annotation:myaddinstance'] = 'Add a new annotation block to Dashboard';
+$string['annotation:addinstance'] = 'Add a new annotation block';
+$string['pluginname'] = 'Annotation';
+$string['privacy:metadata:core_annotation'] = 'A record of annotations added.';
